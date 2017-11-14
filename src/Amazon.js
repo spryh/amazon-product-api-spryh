@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
 
-const api_yt_srch_url = 'https://www.googleapis.com/youtube/v3/search?'
-const api_yt_key_prop = 'key='
-const api_yt_key = 'AIzaSyBwnNqbRoNVMBvT6_8VY4pJ7pYzwAh6QAk'
-
-
-var query = 'Amazon Sellers'
-
+const api_amz_secret = 'brEx/HCmvsw4QpmWC32CIZpc3ngXPqsgptXi/1TH'
+const api_amz_id = 'AKIAJS44JNVX7Y7VXDBQ'
+const api_amz_tag = 'spryh-20'
+let query = 'Turntable'
 
 const amz_embed_url = 'https://www.amazon.com/gp/product/'
 
-
-var amazonProductApi = require('amazon-product-api')
+const amazonProductApi = require('amazon-product-api')
 
 class Amazon extends Component {
   //construct an array to keep the data
@@ -24,15 +20,15 @@ class Amazon extends Component {
     this.clicked = this.clicked.bind(this)
   }
   clicked() {
-    var client = amazonProductApi.createClient({
-      awsId: 'AKIAJS44JNVX7Y7VXDBQ',
-      awsSecret: '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',
-      awsTag: 'spryh-20'
+    let client = amazonProductApi.createClient({
+      awsId: api_amz_id,
+      awsSecret: api_amz_secret,
+      awsTag: api_amz_tag
     })
 
     client
       .itemSearch({
-        keywords: 'Dewalt',
+        keywords: query,
         searchIndex: 'All',
         responseGroup: 'ItemAttributes,Offers,Images'
       })
@@ -41,11 +37,10 @@ class Amazon extends Component {
       .then(results => {
         console.log(results)
         const amz_results = results.map(
-           obj => amz_embed_url + obj.ASIN[0] ///for some reason Amazon packs these in single item arrays
-
+          obj => amz_embed_url + obj.ASIN[0] ///for some reason Amazon packs these in single item arrays
         )
         this.setState({ amz_results })
-         console.log(amz_results)
+        console.log(amz_results)
       })
 
       .catch(function(err) {
@@ -60,17 +55,19 @@ class Amazon extends Component {
         console.log(encodeURI(query));*/
     return (
       <div>
-        <button onClick={this.clicked}>Get {query} Amazon Links </button>
+        <button onClick={this.clicked}>
+          Get Amazon {query} product links...{' '}
+        </button>
         {/*rotate through the array
                         console.log(link);*/}
         {this.state.amz_results.map((link, i) => {
           // div needs a unique key
-          var frame = (
+          let frame = (
             <div className="amazon" key={i}>
               <a href={link}>{link}</a>
             </div>
           )
-          return frame
+          return
         })}
         {this.frame}
       </div>
