@@ -67,7 +67,7 @@ class Amazon extends Component {
               <a href={link}>{link}</a>
             </div>
           )
-          return
+          return frame
         })}
         {this.frame}
       </div>
